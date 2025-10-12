@@ -9,7 +9,7 @@ import team8.bumaview.domain.user.domain.User;
 public class Favorite {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

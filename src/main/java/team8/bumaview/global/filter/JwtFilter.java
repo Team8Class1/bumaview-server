@@ -22,22 +22,23 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader("Authorization");
-
-        if (authorizationHeader == null && !authorizationHeader.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        String token = authorizationHeader.substring(7);
-
-        if(jwtUtil.isExpired(token)){
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
+//        String authorizationHeader = request.getHeader("Authorization");
+//
+//        if (authorizationHeader == null && !authorizationHeader.startsWith("Bearer ")) {
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
+//
+//        String token = authorizationHeader.substring(7);
+//
+//        if(jwtUtil.isExpired(token)){
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
 
         UserDto userDto = UserDto.builder()
-                .username(jwtUtil.getUsername(token))
+//                .username(jwtUtil.getUsername(token))
+                .username("임시이름")
                 .password("임시비번")
                 .build();
         CustomUserDetails customUserDetails = new CustomUserDetails(userDto);

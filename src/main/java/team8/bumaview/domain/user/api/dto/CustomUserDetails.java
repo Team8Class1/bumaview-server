@@ -3,11 +3,9 @@ package team8.bumaview.domain.user.api.dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import team8.bumaview.domain.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
