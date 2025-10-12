@@ -19,8 +19,8 @@ public class CustomUserDetails implements UserDetails {
 
         authorities.add(new GrantedAuthority() {
             @Override
-            public String getAuthority() {
-                return "BASIC";
+                        public String getAuthority() {
+                return userDto.getRole();
             }
         });
 

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team8.bumaview.domain.bookmark.domain.Bookmark;
+import team8.bumaview.domain.userfavorite.domain.UserFavorite;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,16 +26,22 @@ public class User {
 
     private String userId;
     private String password;
+    private String email;
     private Role role;
     private Date birthday;
 
     @OneToMany(mappedBy = "user")
     private List<Bookmark> bookmarks = new ArrayList<>();
 
-    public static User create(String userId, String password) {
+    @OneToMany(mappedBy = "user")
+    private List<UserFavorite> userFavorites = new ArrayList<>();
+
+    public static User create(String userId, String password, String email, Date birthday) {
         User user = new User();
         user.userId = userId;
         user.password = password;
+        user.email = email;
+        user.birthday = birthday;
         return user;
     }
 }

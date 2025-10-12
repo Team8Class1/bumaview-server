@@ -1,28 +1,29 @@
-package team8.bumaview.domain.favorite.domain;
+package team8.bumaview.domain.userfavorite.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team8.bumaview.domain.favorite.domain.Favorite;
 import team8.bumaview.domain.user.domain.User;
-import team8.bumaview.domain.userfavorite.domain.UserFavorite;
-
-import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Favorite {
+public class UserFavorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "favorite")
-    private List<UserFavorite> userFavorites;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favorite_id")
+    private Favorite favorite;
 }

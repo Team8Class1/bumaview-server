@@ -37,12 +37,13 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("*").permitAll()
+                        .requestMatchers("/", "/api/user/login", "/api/user/register").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         http
-                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class)
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
 
 
         http

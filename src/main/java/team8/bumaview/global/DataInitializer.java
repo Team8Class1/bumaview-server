@@ -10,6 +10,8 @@ import team8.bumaview.domain.category.domain.Category;
 import team8.bumaview.domain.category.persistence.CategoryRepository;
 import team8.bumaview.domain.company.domain.Company;
 import team8.bumaview.domain.company.persistence.CompanyRepository;
+import team8.bumaview.domain.favorite.domain.Favorite;
+import team8.bumaview.domain.favorite.persistence.FavoriteRepository;
 import team8.bumaview.domain.group.domain.Group;
 import team8.bumaview.domain.group.persistence.GroupRepository;
 import team8.bumaview.domain.interview.domain.Interview;
@@ -37,7 +39,7 @@ public class DataInitializer implements CommandLineRunner {
     private final InterviewCategoryRepository interviewCategoryRepository;
     private final AnswerRepository answerRepository;
     private final GroupRepository groupRepository;
-    private final InterviewGroupRepository interviewGroupRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -164,13 +166,13 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         groupRepository.save(group);
 
-//        InterviewGroup interviewGroup = InterviewGroup.builder()
-//                .interview(interview)
-//                .group(group)
-//                .build();
-//
-//        interviewGroupRepository.save(interviewGroup);
-
+        String[] favoriteList = {"back", "front", "infra", "security", "bank", "design", "ai", "embedded", "game"};
+        for(String favoriteName : favoriteList) {
+            Favorite favorite = Favorite.builder()
+                    .name(favoriteName)
+                    .build();
+            favoriteRepository.save(favorite);
+        }
         System.out.println("초기 데이터 삽입 완료!");
     }
 }
