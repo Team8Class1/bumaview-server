@@ -1,10 +1,7 @@
 package team8.bumaview.domain.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team8.bumaview.domain.bookmark.domain.Bookmark;
 import team8.bumaview.domain.userfavorite.domain.UserFavorite;
 
@@ -18,6 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User {
 
     @Id
@@ -42,6 +40,7 @@ public class User {
         user.password = password;
         user.email = email;
         user.birthday = birthday;
+        user.role = Role.BASIC;
         return user;
     }
 }

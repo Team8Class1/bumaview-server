@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team8.bumaview.domain.user.api.dto.CustomUserDetails;
 import team8.bumaview.domain.user.api.dto.UserDto;
+import team8.bumaview.domain.user.domain.Role;
 import team8.bumaview.global.util.JwtUtil;
 
 import java.io.IOException;
@@ -45,12 +46,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
             // 3. 토큰에서 username과 role 추출
             String username = jwtUtil.getUsername(token);
-            String role = jwtUtil.getRole(token);
-
+            Role role = Role.valueOf(jwtUtil.getRole(token));
+            Long id = jwtUtil.getId(token);
+            String email = jwtUtil.getEmail(token);
             // 4. UserDetails 및 Authentication 객체 생성
             UserDto userDto = UserDto.builder()
                     .username(username)
                     .role(role)
+                    .id(id)
+                    .email(email)
                     .build();
             CustomUserDetails customUserDetails = new CustomUserDetails(userDto);
 

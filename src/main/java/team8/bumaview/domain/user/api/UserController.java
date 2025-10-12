@@ -38,7 +38,7 @@ public class UserController {
         try {
             String jwt = userService.login(loginRequestDto.getId(), loginRequestDto.getPassword());
             // JWT를 JSON 형태로 반환
-            return ResponseEntity.ok(Map.of("accessToken", jwt));
+            return ResponseEntity.ok(Map.of("accessToken", "Bearer " + jwt));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
         }

@@ -3,10 +3,12 @@ package team8.bumaview.domain.group.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team8.bumaview.domain.group.api.dto.request.AddGroupList;
 import team8.bumaview.domain.group.api.dto.request.GroupDto;
 import team8.bumaview.domain.group.application.GroupService;
+import team8.bumaview.domain.user.api.dto.CustomUserDetails;
 
 @RestController
 @RequestMapping("/api/group")
@@ -16,10 +18,10 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping
-    public ResponseEntity<Void> createGroup(@RequestBody GroupDto groupDto) {
+    public ResponseEntity<Void> createGroup(@AuthenticationPrincipal CustomUserDetails user, @RequestBody GroupDto groupDto) {
 
         // 토큰에서 추출
-        Long userId = 1L;
+        Long userId = user.getUserDto().getId();
         System.out.println("Controller groupDto = " + groupDto);
         groupService.createGroup(userId, groupDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();

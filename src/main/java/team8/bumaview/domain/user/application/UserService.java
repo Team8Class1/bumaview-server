@@ -69,9 +69,18 @@ public class UserService {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         // 3. 역할(Role) 정보 가져오기
+        Long id = customUserDetails.getUserDto().getId();
+        String email = customUserDetails.getUserDto().getEmail();
         String role = customUserDetails.getAuthorities().iterator().next().getAuthority();
 
+        System.out.println("UserService ####");
+        System.out.println("id = " + id);
+        System.out.println("email = " + email);
+        System.out.println("role = " + role);
+        System.out.println("username = " + username);
+        System.out.println("UserService ####");
+
         // 4. JWT 생성하여 반환
-        return jwtUtil.createToken(username, role, 1000L * 60 * 60 * 2);
+        return jwtUtil.createToken(username, role, id, email,1000L * 60 * 60 * 2);
     }
 }

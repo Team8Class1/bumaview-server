@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team8.bumaview.domain.bookmark.application.BookmarkService;
 import team8.bumaview.domain.interview.api.InterviewController;
 import team8.bumaview.domain.interview.api.dto.response.AllInterviewDto;
 import team8.bumaview.domain.interview.application.InterviewService;
+import team8.bumaview.domain.user.api.dto.CustomUserDetails;
 
 import java.util.List;
 
@@ -21,10 +23,10 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @PatchMapping("/{interviewId}")
-    public ResponseEntity<Boolean> updateBookmark(@PathVariable Long interviewId) {
+    public ResponseEntity<Boolean> updateBookmark(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long interviewId) {
 
         // 토큰에서 아이디 가져옴
-        Long userId = 1L;
+        Long userId = user.getUserDto().getId();
 
         Boolean isBookmarked = bookmarkService.updateBookmark(userId, interviewId);
         return ResponseEntity.status(HttpStatus.OK).body(isBookmarked);

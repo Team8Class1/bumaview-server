@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team8.bumaview.global.filter.JwtFilter;
-import team8.bumaview.global.filter.LoginFilter;
 import team8.bumaview.global.util.JwtUtil;
 
 @Configuration

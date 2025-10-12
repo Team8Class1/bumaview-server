@@ -24,11 +24,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-
+        System.out.println("user = " + user);
         UserDto userDto = UserDto.builder()
                 .username(username)
                 .password(user.getPassword())
+                .id(user.getId())
+                .role(user.getRole())
+                .email(user.getEmail())
                 .build();
+        System.out.println("userDto = " + userDto);
         return new CustomUserDetails(userDto);
     }
 }
