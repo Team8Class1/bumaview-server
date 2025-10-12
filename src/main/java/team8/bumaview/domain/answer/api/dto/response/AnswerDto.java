@@ -2,6 +2,8 @@ package team8.bumaview.domain.answer.api.dto.response;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -13,4 +15,5 @@ public class AnswerDto {
     private Long answerId;
     private String answer;
     private int like;
+    private List<AnswerDto> replies;
 }

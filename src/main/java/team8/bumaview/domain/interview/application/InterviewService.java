@@ -143,7 +143,6 @@ public class InterviewService {
 //        Interview interview = interviewRepository.findAllInfoById(interviewId);
         Interview interview = interviewRepository.findById(interviewId).orElseThrow(() -> new EntityNotFoundException("인터뷰 없음"));
         List<CategoryList> categoryList = new ArrayList<>();
-        List<AnswerDto> answerDtoList = new ArrayList<>();
         for(InterviewCategory ic : interview.getInterviewCategories()) {
             CategoryList category = CategoryList.builder()
                     .categoryId(ic.getCategory().getId())
@@ -151,15 +150,20 @@ public class InterviewService {
                     .build();
             categoryList.add(category);
         }
-        for(Answer answer : interview.getAnswers()) {
-            AnswerDto answerDto = AnswerDto.builder()
-                    .userSequenceId(answer.getUser().getId())
-                    .userId(answer.getUser().getUserId())
-                    .like(answer.getLikeCount())
-                    .answerId(answer.getId())
-                    .answer(answer.getAnswer())
-                    .build();
-            answerDtoList.add(answerDto);
+
+        List<AnswerDto> answerDtoList = new ArrayList<>();
+        for (Answer answer : interview.getAnswers()) {
+            if (answer.getParent() == null && !answer.getIsPrivate()) { // 최상위 답변 중 public인 것만 처리
+                AnswerDto answerDto = AnswerDto.builder()
+                        .userSequenceId(answer.getUser().getId())
+                        .userId(answer.getUser().getUserId())
+                        .like(answer.getLikeCount())
+                        .answerId(answer.getId())
+                        .answer(answer.getAnswer())
+                        .replies(buildReplies(answer)) // 대댓글 목록 생성
+                        .build();
+                answerDtoList.add(answerDto);
+            }
         }
 
         return InterviewDto.builder()
@@ -171,6 +175,24 @@ public class InterviewService {
                 .questionAt(interview.getQuestionAt())
                 .answer(answerDtoList)
                 .build();
+    }
+
+    private List<AnswerDto> buildReplies(Answer parentAnswer) {
+        List<AnswerDto> replyDtoList = new ArrayList<>();
+        for (Answer reply : parentAnswer.getChildren()) {
+            if (!reply.getIsPrivate()) { // 대댓글 중 public인 것만 처리
+                AnswerDto replyDto = AnswerDto.builder()
+                        .userSequenceId(reply.getUser().getId())
+                        .userId(reply.getUser().getUserId())
+                        .like(reply.getLikeCount())
+                        .answerId(reply.getId())
+                        .answer(reply.getAnswer())
+                        .replies(null) // 대댓글의 대댓글은 없으므로 null 처리
+                        .build();
+                replyDtoList.add(replyDto);
+            }
+        }
+        return replyDtoList;
     }
 
     public CreateInfoDto getCreateInfo() {

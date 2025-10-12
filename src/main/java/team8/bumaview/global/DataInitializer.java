@@ -113,7 +113,6 @@ public class DataInitializer implements CommandLineRunner {
             categoryRepository.save(category);
         }
 
-
         Category category = categoryRepository.findById(1L).orElse(null);
         InterviewCategory interviewCategory = InterviewCategory.builder()
                 .interview(interview)
@@ -121,14 +120,43 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         interviewCategoryRepository.save(interviewCategory);
 
-        Answer answer = Answer.builder()
+        Answer answer1 = Answer.builder()
                 .answer("answer1")
+                .isPrivate(true)
+                .likeCount(3)
+                .user(user)
+                .interview(interview)
+                .build();
+        answerRepository.save(answer1);
+
+        Answer reply1 = Answer.builder()
+                .answer("answer1 reply")
+                .isPrivate(false)
+                .likeCount(0)
+                .user(user)
+                .interview(interview)
+                .parent(answer1)
+                .build();
+        answerRepository.save(reply1);
+
+        Answer reply2 = Answer.builder()
+                .answer("answer1 reply22")
+                .isPrivate(false)
+                .likeCount(0)
+                .user(user)
+                .interview(interview)
+                .parent(answer1)
+                .build();
+        answerRepository.save(reply2);
+
+        Answer answer2 = Answer.builder()
+                .answer("answer2")
                 .isPrivate(false)
                 .likeCount(3)
                 .user(user)
                 .interview(interview)
                 .build();
-        answerRepository.save(answer);
+        answerRepository.save(answer2);
 
         Group group = Group.builder()
                 .user(user)
