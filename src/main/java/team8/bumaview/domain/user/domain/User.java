@@ -2,6 +2,7 @@ package team8.bumaview.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team8.bumaview.domain.answerlike.domain.AnswerLike;
 import team8.bumaview.domain.bookmark.domain.Bookmark;
 import team8.bumaview.domain.userfavorite.domain.UserFavorite;
 
@@ -33,6 +34,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserFavorite> userFavorites = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<AnswerLike> answerLikes = new ArrayList<>();
 
     public static User create(String userId, String password, String email, Date birthday) {
         User user = new User();

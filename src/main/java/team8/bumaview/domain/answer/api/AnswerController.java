@@ -1,6 +1,7 @@
 package team8.bumaview.domain.answer.api;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import team8.bumaview.domain.user.api.dto.CustomUserDetails;
 @RestController
 @RequestMapping("/api/answer")
 @RequiredArgsConstructor
+@Slf4j
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -43,6 +45,14 @@ public class AnswerController {
     @DeleteMapping("/{answerId}")
     public ResponseEntity<Void> deleteAnswer(@PathVariable Long answerId) {
         answerService.deleteAnswer(answerId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/like/{answerId}")
+    public ResponseEntity<Void> likeAnswer(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long answerId) {
+        log.debug("/api/answer/like/{answerId}");
+        Long userId = user.getUserDto().getId();
+        answerService.likeAnswer(userId, answerId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
