@@ -26,8 +26,15 @@ public class Group {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     public void modify(GroupDto groupDto) {
         this.name = groupDto.getName();
     }
+
+    public GroupDto toDto() {
+        return GroupDto.builder()
+                .groupId(this.id)
+                .name(this.name)
+                .build();
+    }
+
 }

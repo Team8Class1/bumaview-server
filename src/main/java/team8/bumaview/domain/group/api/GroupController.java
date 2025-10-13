@@ -1,5 +1,7 @@
 package team8.bumaview.domain.group.api;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import team8.bumaview.domain.group.api.dto.request.AddGroupList;
 import team8.bumaview.domain.group.api.dto.request.GroupDto;
 import team8.bumaview.domain.group.application.GroupService;
+import team8.bumaview.domain.interview.api.dto.response.AllInterviewDto;
 import team8.bumaview.domain.user.api.dto.CustomUserDetails;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/group")
@@ -45,6 +50,25 @@ public class GroupController {
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
         groupService.deleteGroup(groupId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Data> getGroups(@AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserDto().getId();
+        Data<List<GroupDto>> data = new Data<>(groupService.findGroup(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(data);
+    }
+
+    @GetMapping("/{groupId}/interviews")
+    public ResponseEntity<Data> getInterviewsByGroupId(@PathVariable Long groupId) {
+        Data<List<AllInterviewDto>> data = new Data<>(groupService.findInterviewsByGroupId(groupId));
+        return ResponseEntity.status(HttpStatus.OK).body(data);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    static class Data<T> {
+        private T data;
     }
 
 }

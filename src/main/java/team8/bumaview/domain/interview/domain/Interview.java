@@ -9,6 +9,7 @@ import team8.bumaview.domain.answer.domain.Answer;
 import team8.bumaview.domain.company.domain.Company;
 import team8.bumaview.domain.interview.api.dto.request.ModifyInterviewDto;
 import team8.bumaview.domain.interviewcategory.domain.InterviewCategory;
+import team8.bumaview.domain.interviewgroup.domain.InterviewGroup;
 import team8.bumaview.domain.user.domain.User;
 
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class Interview {
 
     @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InterviewCategory> interviewCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InterviewGroup> interviewGroups = new ArrayList<>();
 
     public void update(ModifyInterviewDto modifyInterviewDto, Company company) {
         this.question = modifyInterviewDto.getQuestion();

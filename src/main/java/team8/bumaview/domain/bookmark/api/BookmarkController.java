@@ -33,10 +33,10 @@ public class BookmarkController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllBookmarks() {
+    public ResponseEntity<?> getAllBookmarks(@AuthenticationPrincipal CustomUserDetails user) {
 
         // 토큰에서 아이디 가져옴
-        Long userId = 1L;
+        Long userId = user.getUserDto().getId();
         List<AllInterviewDto> allInfo = bookmarkService.getAllInterviews(userId);
         Data<List<AllInterviewDto>> data = new Data<>(allInfo);
         return ResponseEntity.status(HttpStatus.OK).body(data);

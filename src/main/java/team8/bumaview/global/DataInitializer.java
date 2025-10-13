@@ -3,6 +3,7 @@ package team8.bumaview.global;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import team8.bumaview.domain.answer.domain.Answer;
 import team8.bumaview.domain.answer.persistence.AnswerRepository;
@@ -23,9 +24,13 @@ import team8.bumaview.domain.interviewgroup.persistence.InterviewGroupRepository
 import team8.bumaview.domain.user.domain.Role;
 import team8.bumaview.domain.user.domain.User;
 import team8.bumaview.domain.user.persistence.UserRepository;
+import team8.bumaview.domain.userfavorite.domain.UserFavorite;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -40,6 +45,8 @@ public class DataInitializer implements CommandLineRunner {
     private final AnswerRepository answerRepository;
     private final GroupRepository groupRepository;
     private final FavoriteRepository favoriteRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -89,6 +96,14 @@ public class DataInitializer implements CommandLineRunner {
             companyRepository.save(company);
         }
 
+        String[] favoriteList = {"back", "front", "infra", "security", "bank", "design", "ai", "embedded", "game"};
+        for(String favoriteName : favoriteList) {
+            Favorite favorite = Favorite.builder()
+                    .name(favoriteName)
+                    .build();
+            favoriteRepository.save(favorite);
+        }
+
 
         // 2. 유저 생성
         User user = User.builder()
@@ -98,6 +113,15 @@ public class DataInitializer implements CommandLineRunner {
                 .birthday(sdf.parse("2025-09-10"))
                 .build();
         userRepository.save(user);
+
+        User user2 = User.builder()
+                .userId("hangyeol")
+                .password(bCryptPasswordEncoder.encode("asdf"))
+                .email("24.014@bssm.hs.kr")
+                .role(Role.BASIC)
+                .birthday(sdf.parse("2008-03-15"))
+                .build();
+        userRepository.save(user2);
 
         // 3. 인터뷰 생성
         Company company = companyRepository.findById(1L).orElse(null);
@@ -166,13 +190,7 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         groupRepository.save(group);
 
-        String[] favoriteList = {"back", "front", "infra", "security", "bank", "design", "ai", "embedded", "game"};
-        for(String favoriteName : favoriteList) {
-            Favorite favorite = Favorite.builder()
-                    .name(favoriteName)
-                    .build();
-            favoriteRepository.save(favorite);
-        }
+
         System.out.println("초기 데이터 삽입 완료!");
     }
 }
