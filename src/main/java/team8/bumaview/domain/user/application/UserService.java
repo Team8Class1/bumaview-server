@@ -1,12 +1,15 @@
 package team8.bumaview.domain.user.application;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team8.bumaview.domain.favorite.domain.Favorite;
 import team8.bumaview.domain.favorite.persistence.FavoriteRepository;
+import team8.bumaview.domain.user.api.dto.UserDto;
 import team8.bumaview.domain.user.api.dto.request.JoinDto;
+import team8.bumaview.domain.user.api.dto.response.UserInfoDto;
 import team8.bumaview.domain.user.domain.User;
 import team8.bumaview.domain.user.persistence.UserRepository;
 import team8.bumaview.domain.userfavorite.domain.UserFavorite;
@@ -73,14 +76,19 @@ public class UserService {
         String email = customUserDetails.getUserDto().getEmail();
         String role = customUserDetails.getAuthorities().iterator().next().getAuthority();
 
-        System.out.println("UserService ####");
-        System.out.println("id = " + id);
-        System.out.println("email = " + email);
-        System.out.println("role = " + role);
-        System.out.println("username = " + username);
-        System.out.println("UserService ####");
+//        System.out.println("UserService ####");
+//        System.out.println("id = " + id);
+//        System.out.println("email = " + email);
+//        System.out.println("role = " + role);
+//        System.out.println("username = " + username);
+//        System.out.println("UserService ####");
 
         // 4. JWT 생성하여 반환
         return jwtUtil.createToken(username, role, id, email,1000L * 60 * 60 * 2);
+    }
+
+    public UserInfoDto getInfo(Long userId) {
+        User user = userRepository.findWithFavoriteById(userId).orElseThrow(() -> new EntityNotFoundException("유저가 존재하지 않습니다."));
+        return user.toUserInfoDto(user.getUserFavorites());
     }
 }
