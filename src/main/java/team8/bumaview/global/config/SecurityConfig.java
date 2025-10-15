@@ -37,6 +37,12 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers( "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-resources/**",
+                                "/webjars/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/login", "/api/user/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/interview/{interviewId}", "/api/interview/all", "/api/interview/create", "/api/interview/search").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")

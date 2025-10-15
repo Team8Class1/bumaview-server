@@ -1,5 +1,6 @@
 package team8.bumaview.global;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -31,6 +32,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+
+
 
 @Component
 @RequiredArgsConstructor
@@ -96,7 +100,7 @@ public class DataInitializer implements CommandLineRunner {
             companyRepository.save(company);
         }
 
-        String[] favoriteList = {"back", "front", "infra", "security", "bank", "design", "ai", "embedded", "game"};
+        String[] favoriteList = {"AI", "백엔드", "금융", "디자인", "임베디드", "프론트엔드", "인프라", "시큐리티"};
         for(String favoriteName : favoriteList) {
             Favorite favorite = Favorite.builder()
                     .name(favoriteName)
@@ -131,7 +135,7 @@ public class DataInitializer implements CommandLineRunner {
                 .company(company)
                 .build();
         interviewRepository.save(interview);
-        String[] categoryNames = {"back", "front", "infra", "security", "bank", "design", "ai", "embedded", "game"};
+        String[] categoryNames = {"AI", "백엔드", "금융", "디자인", "임베디드", "프론트엔드", "인프라", "시큐리티"};
         for(String categoryName : categoryNames) {
             Category category = Category.builder()
                     .name(categoryName)

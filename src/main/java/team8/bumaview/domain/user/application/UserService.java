@@ -48,8 +48,8 @@ public class UserService {
             throw new AlreadyExistException("이미 존재하는 유저 이름입니다.");
         }
 
-        List<Favorite> favorites = favoriteRepository.findByIdIn(joinDTO.getFavoriteList());
-        User user = User.create(id, bCryptPasswordEncoder.encode(password), joinDTO.getEmail(), joinDTO.getBirthday());
+        List<Favorite> favorites = favoriteRepository.findByNameIn(joinDTO.getInterest());
+        User user = User.create(id, bCryptPasswordEncoder.encode(password), joinDTO.getEmail());
 
         userRepository.save(user);
 
@@ -75,13 +75,6 @@ public class UserService {
         Long id = customUserDetails.getUserDto().getId();
         String email = customUserDetails.getUserDto().getEmail();
         String role = customUserDetails.getAuthorities().iterator().next().getAuthority();
-
-//        System.out.println("UserService ####");
-//        System.out.println("id = " + id);
-//        System.out.println("email = " + email);
-//        System.out.println("role = " + role);
-//        System.out.println("username = " + username);
-//        System.out.println("UserService ####");
 
         // 4. JWT 생성하여 반환
         return jwtUtil.createToken(username, role, id, email,1000L * 60 * 60 * 2);

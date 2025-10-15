@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> findByIdIn(Collection<Long> ids);
+
+    List<Favorite> findByNameIn(List<String> favorites);
 }

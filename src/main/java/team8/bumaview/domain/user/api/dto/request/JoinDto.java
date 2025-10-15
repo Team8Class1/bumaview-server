@@ -14,6 +14,5 @@ public class JoinDto {
     private String email;
     private String id;
     private String password;
-    private Date birthday;
-    private List<Long> favoriteList;
+    private List<String> interest;
 }

@@ -41,12 +41,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<AnswerLike> answerLikes = new ArrayList<>();
 
-    public static User create(String userId, String password, String email, Date birthday) {
+    public static User create(String userId, String password, String email) {
         User user = new User();
         user.userId = userId;
         user.password = password;
         user.email = email;
-        user.birthday = birthday;
         user.role = Role.BASIC;
         return user;
     }
